@@ -10,132 +10,73 @@
     <ImageView
         android:id="@+id/login_screen_image"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="360dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/login_screen_backend"
+        android:src="@drawable/login_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/lightGrey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_screen_image" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingHorizontal="12dp"
-        android:fontFamily="@font/open_sans_regular"
-        android:text="Log in or sign up"
-        android:textColor="@color/darkGrey"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/divider"
-        app:layout_constraintEnd_toEndOf="@+id/divider"
-        app:layout_constraintStart_toStartOf="@+id/divider"
-        app:layout_constraintTop_toTopOf="@+id/divider" />
-
     <LinearLayout
-        android:id="@+id/editText"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/edit_text_background"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/login_screen_image">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/open_sans_medium"
+            android:layout_marginTop="16dp"
+            android:background="@color/white"
+            android:fontFamily="@font/open_sans_regular"
+            android:text="we'll send your a 4-digit verification code on your mobile number"
             android:textColor="@color/black"
-            android:gravity="center"
-            android:text="+91"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/mobile_number_edit_text"
+        <LinearLayout
+            android:id="@+id/mobile_field_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:hint="Enter your mobile number"
-            android:textColorHint="@color/darkGrey"
-            android:inputType="phone"
-            android:textSize="18sp"
-            android:fontFamily="@font/open_sans_medium"
-            android:maxLength="10"
-            android:maxLines="1" />
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text_background"
+                android:fontFamily="@font/open_sans_bold"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="+91"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/mobile_number_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/edit_text_background"
+                android:fontFamily="@font/open_sans_medium"
+                android:hint="Enter your mobile number"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:padding="12dp"
+                android:textColorHint="@color/lightGrey"
+                android:textCursorDrawable="@drawable/cursor_line"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <com.project.foodorderingapp.ui.components.LoadingButton
+            android:id="@+id/continue_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            app:text="continue" />
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/continue_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/button_background"
-        android:outlineProvider="none"
-        android:padding="16dp"
-        android:text="continue"
-        android:fontFamily="@font/open_sans_bold"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="36dp"
-        android:background="@color/lightGrey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/continue_button" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingHorizontal="12dp"
-        android:text="or"
-        android:textColor="@color/darkGrey"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/divider2"
-        app:layout_constraintEnd_toEndOf="@+id/divider2"
-        app:layout_constraintStart_toStartOf="@+id/divider2"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/button_background"
-        android:backgroundTint="@color/black"
-        android:outlineProvider="none"
-        android:padding="16dp"
-        android:text="Login with google"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,17 +1,24 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
+
     <style name="Base.Theme.FoodOrderingApp" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="android:includeFontPadding">false</item>
+
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Base.Theme.FoodOrderingApp.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="android:includeFontPadding">false</item>
 
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
 
+    <style name="Theme.FoodOrderingApp" parent="Base.Theme.FoodOrderingApp" />
 
-    <style name="Base.Theme.FoodOrderingApp.ActionBar" parent="Theme.AppCompat.Light">
-        <!-- Customize your dark theme here. -->
-        <item name="android:includeFontPadding">false</item>
 
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="WhiteStatusBarTheme" parent="Base.Theme.FoodOrderingApp">
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/white</item>
     </style>
 </resources>
