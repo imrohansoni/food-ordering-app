@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">foodbite</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="privacy_policy">We respect your privacy and are committed to protecting your personal information. We do not collect any personal information from our users. Our app may collect non-personal information for analytical purposes, such as the device type, operating system, and usage statistics. This information is used solely to improve the user experience and is not shared with third parties. By using our app, you consent to the collection and use of this information as described herein.
+</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_update_name">UpdateNameActivity</string>
     <!-- Strings used for fragments for navigation -->

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.UpdateMobileVerifyCodeActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:title="verify code"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:titleTextColor="@color/black" />
+
+    <TextView
+        android:id="@+id/verification_screen_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/open_sans_regular"
+        android:text="we have sent you a 4-digit verification code on"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <EditText
+        android:id="@+id/code_edit_text_1"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="@font/open_sans_regular"
+        android:gravity="center"
+        android:maxLength="1"
+        android:inputType="number"
+        android:cursorVisible="false"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/verification_screen_text_view" />
+
+    <EditText
+        android:id="@+id/code_edit_text_2"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:cursorVisible="false"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="@font/open_sans_regular"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/code_edit_text_1"
+        app:layout_constraintStart_toEndOf="@+id/code_edit_text_1"
+        app:layout_constraintTop_toTopOf="@+id/code_edit_text_1" />
+
+    <EditText
+        android:id="@+id/code_edit_text_3"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:cursorVisible="false"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="@font/open_sans_regular"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/code_edit_text_2"
+        app:layout_constraintStart_toEndOf="@+id/code_edit_text_2"
+        app:layout_constraintTop_toTopOf="@+id/code_edit_text_2" />
+
+    <EditText
+        android:id="@+id/code_edit_text_4"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/edit_text_background"
+        android:fontFamily="@font/open_sans_regular"
+        android:gravity="center"
+        android:cursorVisible="false"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/code_edit_text_3"
+        app:layout_constraintStart_toEndOf="@+id/code_edit_text_3"
+        app:layout_constraintTop_toTopOf="@+id/code_edit_text_3" />
+
+
+    <com.project.foodorderingapp.ui.components.LoadingButton
+        android:id="@+id/verify_code_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        app:text="update mobile number"
+        app:layout_constraintTop_toBottomOf="@id/code_edit_text_1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

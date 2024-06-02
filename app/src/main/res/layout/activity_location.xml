@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.VerifyCodeActivity">
+    tools:context=".ui.activities.VerifyCodeActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -40,6 +40,7 @@
     <com.project.foodorderingapp.ui.components.LoadingButton
         android:id="@+id/location_access_button"
         android:layout_width="match_parent"
+        app:text="allow location access"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="24dp"

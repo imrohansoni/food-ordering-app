@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,23 +18,56 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodOrderingApp"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activity.UpdateEmailActivity"
+            android:name=".ui.activities.ConfirmationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.OrderActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteStatusBarTheme"
+            />
+        <activity
+            android:name=".ui.activities.ProductActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteStatusBarTheme"/>
+        <activity
+            android:name=".ui.activities.AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.UpdateMobileVerifyCodeActivity"
+            android:exported="false"
+            android:theme="@style/WhiteStatusBarTheme" />
+        <activity
+            android:name=".ui.activities.UpdateMobileNumberActivity"
+            android:exported="false"
+            android:theme="@style/WhiteStatusBarTheme" />
+        <activity
+            android:name=".ui.activities.TermsAndConditionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.PrivacyPolicyActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteStatusBarTheme"/>
+        <activity
+            android:name=".ui.activities.UpdateEmailActivity"
             android:exported="false"
             android:label="@string/title_activity_update_email"
-            android:theme="@style/Theme.FoodOrderingApp" />
+            android:theme="@style/WhiteStatusBarTheme" />
         <activity
-            android:name=".ui.activity.UpdateNameActivity"
+            android:name=".ui.activities.UpdateNameActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.FavoritesActivity"
-            android:exported="false" />
+            android:name=".ui.activities.CartActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/WhiteStatusBarTheme"/>
         <activity
-            android:name=".ui.activity.CartActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,29 +76,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.NoInternet"
+            android:name=".ui.activities.NoInternet"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/WhiteStatusBarTheme" />
         <activity
-            android:name=".ui.activity.LocationActivity"
+            android:name=".ui.activities.LocationActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/WhiteStatusBarTheme" />
         <activity
-            android:name=".ui.activity.VerifyCodeActivity"
+            android:name=".ui.activities.VerifyCodeActivity"
             android:exported="false"
             android:label="Verify code"
-            android:windowSoftInputMode="stateVisible|adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/WhiteStatusBarTheme" />
+            android:theme="@style/WhiteStatusBarTheme"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.MainActivity"
-            android:exported="false" />
+            android:name=".ui.activities.MainActivity"
+            android:exported="false"
+            android:theme="@style/WhiteStatusBarTheme" />
     </application>
 
 </manifest>

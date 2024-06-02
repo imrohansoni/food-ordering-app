@@ -2,10 +2,13 @@ package com.project.foodorderingapp.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 data class SendCodeResponse(
+    @SerializedName("expires_at")
     val expiresAt: String,
     val hash: String,
+    @SerializedName("mobile_number")
     val mobileNumber: String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(

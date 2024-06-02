@@ -9,7 +9,10 @@ import com.project.foodorderingapp.databinding.LoadingButtonBinding
 
 class LoadingButton(context: Context, attr: AttributeSet) :
     LinearLayout(context, attr) {
-    private var buttonText: String
+    private var buttonText: String = ""
+        set(value) {
+            field = value
+        }
     private var binding: LoadingButtonBinding =
         LoadingButtonBinding.inflate(LayoutInflater.from(context), this, true)
 

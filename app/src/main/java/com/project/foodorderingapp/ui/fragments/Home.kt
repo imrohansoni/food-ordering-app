@@ -1,60 +1,94 @@
 package com.project.foodorderingapp.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.project.foodorderingapp.R
+import com.project.foodorderingapp.adapters.CategoriesAdapter
+import com.project.foodorderingapp.adapters.ImageSliderAdapter
+import com.project.foodorderingapp.databinding.FragmentHomeBinding
+import com.project.foodorderingapp.models.Category
+import com.project.foodorderingapp.models.Product
+import com.project.foodorderingapp.models.Products
+import com.project.foodorderingapp.ui.activities.ProductActivity
+import com.project.foodorderingapp.utils.loadJsonFile
+import java.util.Timer
+import java.util.TimerTask
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Home.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Home : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentHomeBinding
+    private val handler = Handler(Looper.getMainLooper())
+    private var currentPage = 0
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        val images = listOf(
+            R.drawable.banner_first,
+            R.drawable.banner_second,
+            R.drawable.banner_third
+        )
+
+        val adapter = ImageSliderAdapter(images)
+        binding.viewPager.adapter = adapter
+        startAutoSlide()
+
+        val categories = loadJsonFile<Category>(requireContext(), fileName = "categories.json")
+        val products = loadJsonFile<Product>(requireContext(), fileName = "products.json")
+
+        binding.categoriesList.layoutManager =
+            GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false)
+        binding.categoriesList.adapter = CategoriesAdapter(categories) {
+            val filteredProducts = products.filter { product -> product.categoryId == it }
+            Intent(requireContext(), ProductActivity::class.java).apply {
+                putExtra("PRODUCT_LIST", Products(filteredProducts))
+                startActivity(this)
+            }
+        }
+
+//        binding.restaurantOne.setOnClickListener {
+//            val filteredProducts = products.subList(0, 3)
+////            val filteredProducts = products.filter { product -> product.categoryId == it }
+//            Intent(requireContext(), ProductActivity::class.java).apply {
+//                putExtra("PRODUCT_LIST", Products(filteredProducts))
+//                startActivity(this)
+//            }
+//        }
+
+//        binding.restaurantTwo.setOnClickListener {
+//            val filteredProducts = products.subList(0, 6)
+//
+////            val filteredProducts = products.filter { product -> product.categoryId == it }
+//            Intent(requireContext(), ProductActivity::class.java).apply {
+//                putExtra("PRODUCT_LIST", Products(filteredProducts))
+//                startActivity(this)
+//            }
+//        }
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Home.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Home().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun startAutoSlide() {
+        val timer = Timer()
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                handler.post {
+                    binding.viewPager.currentItem = currentPage
+                    currentPage++
+                    if (currentPage == 3) {
+                        currentPage = 0
+                    }
                 }
             }
+        }, 2000, 3000)
     }
 }

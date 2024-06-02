@@ -18,6 +18,16 @@ object AuthTokenManager {
         editor.apply()
     }
 
+    fun removeAuthToken(context: Context) {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+            AUTH_PREFS_NAME,
+            Context.MODE_PRIVATE
+        )
+        val editor = sharedPreferences.edit()
+        editor.remove(AUTH_TOKEN_KEY)
+        editor.apply()
+    }
+
     fun getAuthToken(context: Context): String? {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(
             AUTH_PREFS_NAME,
