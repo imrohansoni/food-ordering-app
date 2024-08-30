@@ -6,21 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.foodbite.models.AuthToken
 import com.project.foodbite.network.apiServices
+import com.project.foodbite.ui.State
 import com.project.foodbite.utils.logger
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 class VerifyCodeViewModel : ViewModel() {
-    private val _verifyCodeResponse = MutableLiveData<AuthToken>()
 
-    val verifyCodeResponse: LiveData<AuthToken>
-        get() = _verifyCodeResponse
-
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String>
-        get() = _errorMessage
+    private val _verifyCodeState = MutableLiveData<State<AuthToken>>()
+    val verifyCodeState: LiveData<State<AuthToken>>
+        get() = _verifyCodeState
 
     fun verifyCode(code: Int, mobileNumber: String, hash: String, expiresAt: String) {
+        _verifyCodeState.value = State.Loading
+
         val data = hashMapOf<String, Any>(
             "code" to code,
             "mobile_number" to mobileNumber,
@@ -31,16 +30,25 @@ class VerifyCodeViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val res = apiServices().verifyCode(data)
-                if (res.isSuccessful && res.body() != null) {
-                    _verifyCodeResponse.value = res.body()!!.data
+                if (res.isSuccessful) {
+                    res.body()?.let { resBody ->
+                        _verifyCodeState.value = State.Success(resBody.data)
+                    } ?: run {
+                        _verifyCodeState.value = State.Error("Empty response body")
+                    }
                 } else {
-                    val errorBody = res.errorBody()!!.string()
-                    val jsonObject = JSONObject(errorBody)
-                    _errorMessage.value = jsonObject.getString("message")
+                    val errorBody = res.errorBody()?.string()
+
+                    val message = errorBody?.let {
+                        val jsonObject = JSONObject(it)
+                        jsonObject.getString("message")
+                    } ?: "Unknown error"
+
+                    _verifyCodeState.value = State.Error(message)
                 }
             } catch (throwable: Throwable) {
                 logger(throwable.message.toString())
-                throw throwable
+                _verifyCodeState.value = State.Error(throwable.message.toString())
             }
         }
 
