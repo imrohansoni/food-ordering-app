@@ -17,6 +17,8 @@ import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.project.foodbite.controllers.LoginController
 import com.project.foodbite.databinding.ActivityLoginBinding
+import com.project.foodbite.ui.State
+import com.project.foodbite.ui.components.LoadingDialog
 import com.project.foodbite.viewModels.LoginViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -26,6 +28,8 @@ class LoginActivity : AppCompatActivity() {
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginBinding
     private val pattern = Regex("^\\d{10}\$")
+
+    private lateinit var loadingDialog: LoadingDialog
 
     private val googleSignLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -49,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
         window.statusBarColor = Color.BLACK
 
         binding.continueButton.disabled = true
+        loadingDialog = LoadingDialog(this)
 
         binding.mobileNumberEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -60,18 +65,12 @@ class LoginActivity : AppCompatActivity() {
 
         binding.mobileNumberEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
-                charSequence: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
+                charSequence: CharSequence?, start: Int, count: Int, after: Int
             ) {
             }
 
             override fun onTextChanged(
-                charSequence: CharSequence,
-                start: Int,
-                before: Int,
-                count: Int
+                charSequence: CharSequence, start: Int, before: Int, count: Int
             ) {
                 binding.continueButton.disabled = !charSequence.matches(pattern)
             }
@@ -89,32 +88,57 @@ class LoginActivity : AppCompatActivity() {
             continueButtonHandler()
         }
 
-        loginViewModel.loginResponse.observe(this) { loginResponse ->
-            Intent(this@LoginActivity, VerifyCodeActivity::class.java).apply {
-                putExtra("LOGIN_RESPONSE", loginResponse)
-                startActivity(this)
-                finish()
+        loginViewModel.loginWithMobileState.observe(this) { uiState ->
+            when (uiState) {
+                is State.Error -> {
+                    binding.continueButton.stopLoading()
+                    Toast.makeText(this@LoginActivity, uiState.message, Toast.LENGTH_SHORT).show()
+                }
+
+                State.Loading -> {
+                    binding.continueButton.startLoading("wait, sending code...")
+                    binding.mobileNumberEditText.isEnabled = false
+                    binding.continueButton.isEnabled = true
+                }
+
+                is State.Success -> {
+                    binding.continueButton.stopLoading()
+                    Intent(this@LoginActivity, VerifyCodeActivity::class.java).apply {
+                        putExtra("LOGIN_RESPONSE", uiState.data)
+                        startActivity(this)
+                        finish()
+                    }
+                }
             }
         }
 
-        loginViewModel.loginWithGoogleResponse.observe(this) {
-            Intent(this@LoginActivity, LocationActivity::class.java).apply {
-                startActivity(this)
-                finish()
-            }
-        }
+        loginViewModel.loginWithGoogleState.observe(this) { uiState ->
+            when (uiState) {
+                is State.Error -> {
+                    loadingDialog.dismiss()
+                    Toast.makeText(this@LoginActivity, uiState.message, Toast.LENGTH_SHORT).show()
+                }
 
-        loginViewModel.errorMessage.observe(this) {
-            Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
+                State.Loading -> {
+                    loadingDialog.show()
+                }
+
+                is State.Success -> {
+                    loadingDialog.show()
+                    Intent(this@LoginActivity, LocationActivity::class.java).apply {
+                        startActivity(this)
+                        finish()
+                    }
+                }
+            }
         }
     }
-
 
     private suspend fun showPhoneNumberSuggestion() {
         val hintRequest = GetPhoneNumberHintIntentRequest.builder().build()
         try {
-            val pendingIntent = Identity.getSignInClient(this)
-                .getPhoneNumberHintIntent(hintRequest).await()
+            val pendingIntent =
+                Identity.getSignInClient(this).getPhoneNumberHintIntent(hintRequest).await()
             val intentSenderRequest = IntentSenderRequest.Builder(pendingIntent).build()
             phonePickIntentResultLauncher.launch(intentSenderRequest)
         } catch (ex: Exception) {
@@ -129,11 +153,7 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        binding.continueButton.startLoading("wait, sending code...")
-
-        binding.mobileNumberEditText.isEnabled = false
-        binding.continueButton.isEnabled = true
-        loginViewModel.login(binding.mobileNumberEditText.text.toString())
+        loginViewModel.loginWithMobile(binding.mobileNumberEditText.text.toString())
     }
 
     private val phonePickIntentResultLauncher =
