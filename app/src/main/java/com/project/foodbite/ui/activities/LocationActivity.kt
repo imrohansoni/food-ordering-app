@@ -1,44 +1,30 @@
 package com.project.foodbite.ui.activities
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.Priority
 import com.project.foodbite.databinding.ActivityLocationBinding
 import com.project.foodbite.utils.Constants
-import com.project.foodbite.utils.checkPermission
-import com.project.foodbite.utils.isGpsEnabled
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+import com.project.foodbite.controllers.LocationController
 
 class LocationActivity : AppCompatActivity() {
-    private lateinit var fusedLocationProvider: FusedLocationProviderClient
     private lateinit var binding: ActivityLocationBinding
+    private val controller = LocationController(this)
 
     private val gpsSettingLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
         if (result.resultCode == RESULT_OK) {
             lifecycleScope.launch {
-                getCurrentLocation()
+                controller.getCurrentLocation()
             }
         } else {
             Toast.makeText(
@@ -60,8 +46,6 @@ class LocationActivity : AppCompatActivity() {
         binding.locationAnimationView.setAnimation("location_animation.json")
         binding.locationAnimationView.playAnimation()
 
-        fusedLocationProvider = LocationServices.getFusedLocationProviderClient(this)
-
         binding.enableDeviceLocationButton.setOnClickListener {
             checkForLocation()
         }
@@ -73,59 +57,21 @@ class LocationActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun showTurnOnGpsDialog() {
-        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 0)
-            .setMaxUpdates(1)
-            .build()
-
-        val request = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
-            .setAlwaysShow(true)
-            .build()
-
-        val settingsClient = LocationServices.getSettingsClient(this)
-
-        try {
-            settingsClient.checkLocationSettings(request).await()
-            getCurrentLocation()
-        } catch (exception: ResolvableApiException) {
-            val intentSenderRequest =
-                IntentSenderRequest.Builder(exception.resolution).build()
-            gpsSettingLauncher.launch(intentSenderRequest)
-        } catch (exception: Exception) {
-            binding.enableDeviceLocationButton.stopLoading()
-
-            Toast.makeText(
-                this@LocationActivity,
-                "GPS is required for this app to work. Please enable GPS.",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-
-    private fun shouldRequestPermission(): Boolean {
-        return (ActivityCompat.shouldShowRequestPermissionRationale(
-            this, Manifest.permission.ACCESS_FINE_LOCATION
-        ) || ActivityCompat.shouldShowRequestPermissionRationale(
-            this, Manifest.permission.ACCESS_COARSE_LOCATION
-        ))
-    }
-
     private fun checkForLocation() {
-        if (!checkLocationPermission()) {
-            if (shouldRequestPermission()) {
-                requestLocationPermission()
+        if (!controller.isLocationPermissionAllowed()) {
+            if (controller.shouldRequestPermissionAgain()) {
+                controller.requestLocationPermission()
             } else {
                 showLocationPermissionDialog()
             }
         } else {
-            if (!isGpsEnabled(this)) {
+            if (!controller.isGpsEnabled()) {
                 lifecycleScope.launch {
-                    showTurnOnGpsDialog()
+                    controller.displayGpsSettingDialog(gpsSettingLauncher)
                 }
             } else {
                 lifecycleScope.launch {
-                    getCurrentLocation()
+                    controller.getCurrentLocation()
                 }
             }
         }
@@ -134,57 +80,6 @@ class LocationActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         checkForLocation()
-    }
-
-    private fun checkLocationPermission(): Boolean {
-        return checkPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) &&
-                checkPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION)
-    }
-
-    private fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(
-            this@LocationActivity,
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ),
-            Constants.LOCATION_PERMISSION_REQUEST_CODE
-        )
-    }
-
-    @SuppressLint("MissingPermission")
-    private suspend fun getCurrentLocation() {
-        try {
-            binding.enableDeviceLocationButton.startLoading("getting the location")
-            val location = withContext(Dispatchers.IO) {
-                fusedLocationProvider.getCurrentLocation(
-                    Priority.PRIORITY_HIGH_ACCURACY,
-                    null
-                ).await()
-            }
-
-            location?.let {
-                withContext(Dispatchers.Main) {
-                    binding.enableDeviceLocationButton.stopLoading()
-                    Intent(this@LocationActivity, MainActivity::class.java).apply {
-                        startActivity(this)
-                        finishAffinity()
-                    }
-                    // save the location to the database
-                }
-            }
-        } catch (e: Exception) {
-            binding.enableDeviceLocationButton.stopLoading()
-            var message = "Failed to get current location"
-            if (e is SecurityException) {
-                message = "Location permission was denied."
-            }
-
-            Toast.makeText(
-                this@LocationActivity, message,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
     }
 
     override fun onRequestPermissionsResult(
@@ -224,8 +119,4 @@ class LocationActivity : AppCompatActivity() {
             }
             .show()
     }
-
 }
-
-
-
