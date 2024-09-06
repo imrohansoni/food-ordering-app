@@ -19,20 +19,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:gravity="center"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_screen_image">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@color/white"
-            android:fontFamily="@font/open_sans_regular"
-            android:text="we'll send your a 4-digit verification code on your mobile number"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
 
         <LinearLayout
             android:id="@+id/mobile_field_container"
@@ -47,7 +40,6 @@
                 android:layout_height="52dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/edit_text_background"
-                android:fontFamily="@font/open_sans_bold"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="+91"
@@ -58,8 +50,8 @@
                 android:id="@+id/mobile_number_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
+                android:includeFontPadding="false"
                 android:background="@drawable/edit_text_background"
-                android:fontFamily="@font/open_sans_medium"
                 android:hint="Enter your mobile number"
                 android:inputType="phone"
                 android:maxLength="10"
@@ -67,16 +59,63 @@
                 android:padding="12dp"
                 android:textColorHint="@color/lightGrey"
                 android:textCursorDrawable="@drawable/cursor_line"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
-        <com.project.foodorderingapp.ui.components.LoadingButton
+        <com.project.foodbite.ui.components.LoadingButton
             android:id="@+id/continue_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="16dp"
             app:text="continue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="OR"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/login_with_google_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_layout"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginEnd="12dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                android:src="@drawable/google_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_medium"
+                android:text="Login with google"
+                android:textSize="16sp"
+                android:textColor="@color/black" />
+        </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/bottom_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/open_sans_regular"
+        android:text="By logging in you have accepted the privacy policy and terms"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

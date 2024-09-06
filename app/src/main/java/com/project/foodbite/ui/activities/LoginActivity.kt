@@ -2,6 +2,7 @@ package com.project.foodbite.ui.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -19,6 +20,8 @@ import com.project.foodbite.controllers.LoginController
 import com.project.foodbite.databinding.ActivityLoginBinding
 import com.project.foodbite.ui.State
 import com.project.foodbite.ui.components.LoadingDialog
+import com.project.foodbite.utils.AppSignatureHelper
+import com.project.foodbite.utils.logger
 import com.project.foodbite.viewModels.LoginViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -28,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginBinding
     private val pattern = Regex("^\\d{10}\$")
-
     private lateinit var loadingDialog: LoadingDialog
 
     private val googleSignLauncher =
@@ -54,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.continueButton.disabled = true
         loadingDialog = LoadingDialog(this)
+        logger(message = AppSignatureHelper(this).getAppSignatures()[0])
 
         binding.mobileNumberEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -88,25 +91,25 @@ class LoginActivity : AppCompatActivity() {
             continueButtonHandler()
         }
 
-        loginViewModel.loginWithMobileState.observe(this) { uiState ->
+        loginViewModel.sendCodeState.observe(this) { uiState ->
             when (uiState) {
                 is State.Error -> {
                     binding.continueButton.stopLoading()
+                    binding.mobileNumberEditText.isEnabled = true
                     Toast.makeText(this@LoginActivity, uiState.message, Toast.LENGTH_SHORT).show()
                 }
 
                 State.Loading -> {
-                    binding.continueButton.startLoading("wait, sending code...")
+                    binding.continueButton.startLoading("sending code")
                     binding.mobileNumberEditText.isEnabled = false
                     binding.continueButton.isEnabled = true
                 }
 
                 is State.Success -> {
-                    binding.continueButton.stopLoading()
                     Intent(this@LoginActivity, VerifyCodeActivity::class.java).apply {
-                        putExtra("LOGIN_RESPONSE", uiState.data)
                         startActivity(this)
                         finish()
+                        binding.continueButton.stopLoading()
                     }
                 }
             }
@@ -146,6 +149,21 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1000 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this@LoginActivity, "read sms permission is granted", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            Toast.makeText(this@LoginActivity, "read sms permission denied", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
     private fun continueButtonHandler() {
         val mobileNumber = binding.mobileNumberEditText.text
         if (!mobileNumber.matches(pattern)) {
@@ -153,7 +171,7 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        loginViewModel.loginWithMobile(binding.mobileNumberEditText.text.toString())
+        loginViewModel.sendCode(binding.mobileNumberEditText.text.toString())
     }
 
     private val phonePickIntentResultLauncher =
@@ -166,6 +184,7 @@ class LoginActivity : AppCompatActivity() {
                     if (it.startsWith("+91")) {
                         val mobile = it.replace("+91", "")
                         binding.mobileNumberEditText.setText(mobile)
+                        binding.mobileNumberEditText.setSelection(mobile.length)
                     }
                 }
             }
