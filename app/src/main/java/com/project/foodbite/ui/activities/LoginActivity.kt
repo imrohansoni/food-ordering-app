@@ -107,6 +107,7 @@ class LoginActivity : AppCompatActivity() {
 
                 is State.Success -> {
                     Intent(this@LoginActivity, VerifyCodeActivity::class.java).apply {
+                        putExtra("LOGIN_RESPONSE", uiState.data)
                         startActivity(this)
                         finish()
                         binding.continueButton.stopLoading()

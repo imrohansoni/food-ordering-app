@@ -1,13 +1,11 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.project.foodorderingapp.database.FoodbiteDatabase
-import com.project.foodorderingapp.R
-import com.project.foodorderingapp.network.apiServices
-import com.project.foodorderingapp.databinding.ActivityUpdateNameBinding
+import com.project.foodbite.R
+import com.project.foodbite.database.FoodbiteDatabase
+import com.project.foodbite.databinding.ActivityUpdateNameBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,17 +23,17 @@ class UpdateNameActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.back_button)
 
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val db = FoodbiteDatabase.getDatabase(this@UpdateNameActivity).userDao()
-            val user = db.getUser()[0]
-
-            if (user.firstName != null && user.lastName != null) {
-                withContext(Dispatchers.Main) {
-                    binding.firstNameEditText.setText(user.firstName)
-                    binding.lastNameEditText.setText(user.lastName)
-                }
-            }
-        }
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            val db = FoodbiteDatabase.getDatabase(this@UpdateNameActivity).userDao()
+//            val user = db.getUser()[0]
+//
+//            if (user.firstName != null && user.lastName != null) {
+//                withContext(Dispatchers.Main) {
+//                    binding.firstNameEditText.setText(user.firstName)
+//                    binding.lastNameEditText.setText(user.lastName)
+//                }
+//            }
+//        }
 
         binding.updateNameButton.setOnClickListener {
             val firstName = binding.firstNameEditText.text.toString()

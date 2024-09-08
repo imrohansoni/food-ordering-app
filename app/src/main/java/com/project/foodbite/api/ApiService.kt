@@ -1,9 +1,10 @@
-package com.project.foodorderingapp.network
+package com.project.foodbite.network
 
-import com.project.foodorderingapp.models.ApiResponse
-import com.project.foodorderingapp.models.AuthToken
-import com.project.foodorderingapp.models.LoginResponse
-import com.project.foodorderingapp.models.User
+import com.project.foodbite.models.ApiResponse
+import com.project.foodbite.models.AuthToken
+import com.project.foodbite.models.Categories
+import com.project.foodbite.models.SendCodeResponse
+import com.project.foodbite.models.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,12 +15,21 @@ interface ApiService {
     @POST("auth/send-code")
     suspend fun sendCode(
         @Body data: HashMap<String, String>
-    ): Response<ApiResponse<LoginResponse>>
+    ): Response<ApiResponse<SendCodeResponse>>
 
-    @POST("auth/login")
-    suspend fun login(
+    @POST("auth/login-with-google")
+    suspend fun loginWithGoogle(
+        @Body data: HashMap<String, String?>
+    ): Response<ApiResponse<AuthToken>>
+
+    @POST("auth/verify-code")
+    suspend fun verifyCode(
         @Body data: HashMap<String, Any>
     ): Response<ApiResponse<AuthToken>>
+
+
+    @GET("categories")
+    suspend fun getCategories(): Response<ApiResponse<Categories>>
 
     @GET("account")
     suspend fun getAccount(): Response<ApiResponse<User>>

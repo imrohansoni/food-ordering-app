@@ -1,14 +1,11 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.project.foodorderingapp.R
-import com.project.foodorderingapp.database.FoodbiteDatabase
-import com.project.foodorderingapp.databinding.ActivityUpdateEmailBinding
-import com.project.foodorderingapp.models.User
-import com.project.foodorderingapp.network.apiServices
+import com.project.foodbite.R
+import com.project.foodbite.database.FoodbiteDatabase
+import com.project.foodbite.databinding.ActivityUpdateEmailBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,16 +21,16 @@ class UpdateEmailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.back_button)
-        lifecycleScope.launch(Dispatchers.IO) {
-            val db = FoodbiteDatabase.getDatabase(this@UpdateEmailActivity).userDao()
-            val user = db.getUser()[0]
-
-            if (user.email != null) {
-                withContext(Dispatchers.Main) {
-                    binding.emailEditText.setText(user.email)
-                }
-            }
-        }
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            val db = FoodbiteDatabase.getDatabase(this@UpdateEmailActivity).userDao()
+//            val user = db.getUser()[0]
+//
+//            if (user.email != null) {
+//                withContext(Dispatchers.Main) {
+//                    binding.emailEditText.setText(user.email)
+//                }
+//            }
+//        }
 
         binding.updateEmailButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()

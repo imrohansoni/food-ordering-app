@@ -1,13 +1,13 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.foodorderingapp.R
-import com.project.foodorderingapp.adapters.OrderAdapter
-import com.project.foodorderingapp.database.FoodbiteDatabase
-import com.project.foodorderingapp.databinding.ActivityOrderBinding
+import com.project.foodbite.R
+import com.project.foodbite.adapters.OrderAdapter
+import com.project.foodbite.database.FoodbiteDatabase
+import com.project.foodbite.databinding.ActivityOrderBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

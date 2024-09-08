@@ -1,8 +1,8 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.project.foodorderingapp.R
+import androidx.appcompat.app.AppCompatActivity
+import com.project.foodbite.R
 
 class UpdateMobileVerifyCodeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

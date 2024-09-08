@@ -1,4 +1,4 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
 import android.content.Intent
 import android.graphics.Color
@@ -6,15 +6,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.project.foodorderingapp.R
-import com.project.foodorderingapp.utils.AuthTokenManager
-import com.project.foodorderingapp.utils.NetworkConnectivity
+import com.project.foodbite.databinding.ActivitySplashBinding
+import com.project.foodbite.utils.NetworkConnectivity
 
-// first check the internet connection
 class SplashActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         window.statusBarColor = Color.BLACK
         checkInternetConnectivity()
@@ -29,24 +30,25 @@ class SplashActivity : AppCompatActivity() {
                     finish()
                 }
             } else {
-                val authToken = AuthTokenManager.getAuthToken(this)
 
-                if (authToken != null) {
-                    Intent(this, MainActivity::class.java).apply {
-                        startActivity(this)
-                        finish()
-                    }
-                } else {
-                    Intent(this, LoginActivity::class.java).apply {
-                        startActivity(this)
-                        finish()
-                    }
+                Intent(this, LoginActivity::class.java).apply {
+                    startActivity(this)
+                    finish()
                 }
+//                val authToken = AuthTokenManager.getAuthToken(this)
+//
+//                if (authToken != null) {
+//                    Intent(this, MainActivity::class.java).apply {
+//                        startActivity(this)
+//                        finish()
+//                    }
+//                } else {
+//                    Intent(this, LoginActivity::class.java).apply {
+//                        startActivity(this)
+//                        finish()
+//                    }
+//                }
             }
         }, 1000)
-    }
-
-    private fun checkLogedIn() {
-
     }
 }

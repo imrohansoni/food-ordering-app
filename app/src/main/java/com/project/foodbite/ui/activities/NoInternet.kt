@@ -1,18 +1,22 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.project.foodorderingapp.R
-import com.project.foodorderingapp.utils.AuthTokenManager
-import com.project.foodorderingapp.utils.NetworkConnectivity
+import com.project.foodbite.databinding.ActivityNoInternetBinding
+import com.project.foodbite.utils.AuthTokenManager
+import com.project.foodbite.utils.NetworkConnectivity
 
 class NoInternet : AppCompatActivity() {
     private lateinit var networkConnectivity: NetworkConnectivity
+    private lateinit var binding: ActivityNoInternetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_no_internet)
+
+        binding = ActivityNoInternetBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         networkConnectivity.registerNetworkCallback {
             if (it) {
                 val authToken = AuthTokenManager.getAuthToken(this)

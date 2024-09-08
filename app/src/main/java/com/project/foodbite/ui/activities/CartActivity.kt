@@ -1,16 +1,14 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.project.foodorderingapp.R
-import com.project.foodorderingapp.adapters.CartItemAdapter
-import com.project.foodorderingapp.database.FoodbiteDatabase
-import com.project.foodorderingapp.databinding.ActivityCartBinding
-import com.project.foodorderingapp.models.Order
+import com.project.foodbite.R
+import com.project.foodbite.adapters.CartItemAdapter
+import com.project.foodbite.database.FoodbiteDatabase
+import com.project.foodbite.databinding.ActivityCartBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,6 +18,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
     private lateinit var cartItemAdapter: CartItemAdapter
     private var isActive: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCartBinding.inflate(layoutInflater)

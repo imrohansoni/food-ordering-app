@@ -1,4 +1,4 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -9,7 +9,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.airbnb.lottie.LottieAnimationView
-import com.project.foodorderingapp.R
+import com.project.foodbite.R
 
 class ConfirmationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

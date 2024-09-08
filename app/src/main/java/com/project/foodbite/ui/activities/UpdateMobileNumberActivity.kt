@@ -1,9 +1,9 @@
-package com.project.foodorderingapp.ui.activities
+package com.project.foodbite.ui.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.project.foodorderingapp.R
-import com.project.foodorderingapp.databinding.ActivityUpdateMobileNumberBinding
+import com.project.foodbite.R
+import com.project.foodbite.databinding.ActivityUpdateMobileNumberBinding
 
 class UpdateMobileNumberActivity : AppCompatActivity() {
     private lateinit var b: ActivityUpdateMobileNumberBinding
@@ -18,8 +18,4 @@ class UpdateMobileNumberActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.back_button)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
 }

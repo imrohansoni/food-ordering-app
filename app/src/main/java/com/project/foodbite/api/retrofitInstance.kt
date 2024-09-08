@@ -1,8 +1,6 @@
-package com.project.foodorderingapp.network
+package com.project.foodbite.network
 
-import android.content.Context
-import com.project.foodorderingapp.utils.Constants
-import okhttp3.OkHttpClient
+import com.project.foodbite.utils.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

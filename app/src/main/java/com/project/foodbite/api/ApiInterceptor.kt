@@ -1,7 +1,7 @@
-package com.project.foodorderingapp.network
+package com.project.foodbite.network
 
 import android.content.Context
-import com.project.foodorderingapp.utils.AuthTokenManager
+import com.project.foodbite.utils.AuthTokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -15,7 +15,8 @@ class ApiInterceptor(private val context: Context, private val tokenRequired: Bo
 
         if (tokenRequired) {
             AuthTokenManager.getAuthToken(context)?.let {
-                originalRequest = originalRequest.newBuilder().addHeader("authorization", "Bearer $it").build()
+                originalRequest =
+                    originalRequest.newBuilder().addHeader("authorization", "Bearer $it").build()
 //                newUrl = originalURL.newBuilder().addQueryParameter("authToken", it)
             }
         }
